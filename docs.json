@@ -1,72 +1,74 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Mintlify Starter Kit",
+  "name": "Bondio Help & FAQs",
   "colors": {
-    "primary": "#16A34A",
+    "primary": "#0D9373",
     "light": "#07C983",
-    "dark": "#15803D"
+    "dark": "#0D9373"
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "pages": [
+    "groups": [
       {
         "group": "Getting Started",
         "pages": [
           "index",
-          "quickstart"
+          "getting-started/test-an-esim"
+        ]
+      },
+      {
+        "group": "Platform",
+        "pages": [
+          "platform/omega-label",
+          "platform/api-features-per-label",
+          "platform/apn-information",
+          "platform/throttling",
+          "platform/plan-validity-v1"
+        ]
+      },
+      {
+        "group": "Support",
+        "pages": [
+          "support/troubleshooting-checklist",
+          "support/raising-support-requests"
+        ]
+      },
+      {
+        "group": "eSIM Customisation",
+        "pages": [
+          "customisation/spn-customisation",
+          "customisation/click-to-install-android"
+        ]
+      },
+      {
+        "group": "Launch Announcements",
+        "pages": [
+          "announcements/omega-launch",
+          "announcements/v2-api",
+          "announcements/editable-deletable-plans",
+          "announcements/voice-sms-france"
+        ]
+      },
+      {
+        "group": "Updates",
+        "pages": [
+          "changelog"
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
-  },
-  "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    ]
   },
   "navbar": {
     "links": [
       {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "label": "Dashboard",
+        "href": "https://dashboard.bondio.co"
       }
     ],
     "primary": {
       "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
-    ]
-  },
-  "footer": {
-    "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "label": "API Reference",
+      "href": "https://bondio.stoplight.io/docs/bondio-api"
     }
   }
 }
