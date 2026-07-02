@@ -1,0 +1,170 @@
+---
+title: "Editable & Deletable Plans"
+description: "Plans are now fully editable — even after they've been used — and can be deleted safely"
+icon: "pen-to-square"
+---
+
+We're excited to announce a powerful upgrade to the Bondio API: **plans are now fully editable — even after they've been used!** You can now update any of the following fields in a Plan using the Update Plan API:
+
+- `name`
+- `dataMegaBytes`
+- `periodDays`
+- `periodIterations`
+- `throttledSpeedKbps`
+- `coverageProfileId`
+
+These changes will only apply to **new eSIM provisions and top-ups** — existing Plan Attachments will remain unaffected. This gives you the flexibility to adjust plans on the fly while preserving all past activity.
+
+Additionally, any plan can now be **deleted** without impacting existing subscriptions and plan attachments.
+
+## API changes
+
+### Query param changes
+
+The `?expand=plan` query param will be removed from the APIs below. The plan field will no longer be expandable and will always return a fixed object as shown in the next section.
+
+1. Get plan attachment (V2)
+2. List plan attachments (V2)
+3. (Top-up) Attach a plan (V2)
+4. Suspend a plan attachment (V2)
+5. Get a subscription (V1)
+6. List all subscriptions (V1)
+7. Create a subscription (V1)
+8. List addon attachments (V1)
+9. (Top-up) Attach an addon to a subscription (V1)
+
+### V2 model changes
+
+#### PlanAttachment
+
+The `plan` field in the PlanAttachment model will be limited to just 6 fields. Here is the schema for the new object:
+
+```json
+{
+  "id": "platt_kashdfad",
+  "createdAt": 173123123,
+  "activationAt": 17375897923,
+  "expirationAt": 173123153,
+  "state": "ACTIVE",
+  "usedAllowance": {
+    "dataBytes": 1024,
+    "voiceSeconds": 60,
+    "smsMessages": 100
+  },
+  "plan": {
+    "dataMegaBytes": 1024,
+    "periodDays": 1,
+    "periodIterations": 7,
+    "throttledSpeedKbps": 128,
+    "coverageProfileId": "cvpr_j64hksfs",
+    "label": "tau"
+  }
+}
+```
+
+#### Webhook event — Attachment activated
+
+The `planId` field will be replaced by the `plan` object:
+
+```json
+{
+  "type": "attachment.activated",
+  "timestamp": 1730474606,
+  "data": {
+    "esim": "89928374298342734",
+    "plan": {
+      "dataMegaBytes": 1024,
+      "periodDays": 1,
+      "periodIterations": 7,
+      "throttledSpeedKbps": 128,
+      "coverageProfileId": "cvpr_j64hksfs",
+      "label": "tau"
+    },
+    "attachmentId": "pattch_3rnplcna"
+  }
+}
+```
+
+#### Webhook event — Attachment allowance consumed
+
+The `planId` field will be replaced by the `plan` object:
+
+```json
+{
+  "type": "attachment.allowanceConsumed",
+  "timestamp": 1730474606,
+  "data": {
+    "usagePercentage": 80,
+    "dataUsageBytes": 1231230,
+    "esim": "89123465789487473",
+    "plan": {
+      "dataMegaBytes": 1024,
+      "periodDays": 1,
+      "periodIterations": 7,
+      "throttledSpeedKbps": 128,
+      "coverageProfileId": "cvpr_j64hksfs",
+      "label": "tau"
+    },
+    "attachmentId": "ptac_lkajsdfkll"
+  }
+}
+```
+
+### V1 model changes
+
+#### Subscription object
+
+The `plan` field in the Subscription model will be limited to just 6 fields:
+
+```json
+{
+  "id": "sub.id1",
+  "esimIccid": "891004234814455936F",
+  "planId": "plan_id1",
+  "createdAt": 1707752560,
+  "activatedAt": 1707778560,
+  "expireAt": 1707799560,
+  "purchasedAllowance": {
+    "dataBytes": 102400001024,
+    "voiceSeconds": 3660,
+    "smsMessages": 100
+  },
+  "remainingAllownace": {
+    "dataBytes": 1024,
+    "voiceSeconds": 1800,
+    "smsMessages": 50
+  },
+  "state": "active",
+  "metadata": {
+    "devDefinedKey": "someValue"
+  },
+  "plan": {
+    "dataMegaBytes": 1024,
+    "periodDays": 1,
+    "periodIterations": 7,
+    "throttledSpeedKbps": 128,
+    "coverageProfileId": "cvpr_j64hksfs",
+    "label": "tau"
+  }
+}
+```
+
+#### Addon object (Top-up)
+
+The `addonPlan` field in the addonAttachment model will be limited to just 6 fields:
+
+```json
+{
+  "id": "addon_do3st1ana",
+  "addonPlanId": "plan_d2inraat",
+  "attachedAt": 17123891233,
+  "addonPlan": {
+    "dataMegaBytes": 1024,
+    "periodDays": 1,
+    "periodIterations": 7,
+    "throttledSpeedKbps": 128,
+    "coverageProfileId": "cvpr_j64hksfs",
+    "label": "tau"
+  }
+}
+```

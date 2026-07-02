@@ -1,0 +1,80 @@
+---
+title: "APN Information"
+description: "APN configuration details and breakout locations for each label"
+icon: "mobile"
+---
+
+## APN configuration details
+
+We use **auto-APN configuration**, which means the APN field is automatically populated once the eSIM is downloaded.
+
+### Auto-APN feature
+
+All our eSIMs use automatic APN configuration:
+
+- APN field is automatically populated upon eSIM download
+- No user action required
+- No configuration needed from clients or end-users
+
+<Note>
+Each label has a different APN, so please make sure to check the ICCID for specific information. This can now be found in the plan details on the dashboard.
+</Note>
+
+{/* TODO: add screenshot — images/apn-plan-details.png */}
+
+## APN breakout locations
+
+### Complete label reference guide
+
+| Label | APN | Breakout Location(s) | Status |
+| --- | --- | --- | --- |
+| LAMBDA | orange, wap.tim.it | Frankfurt 🇩🇪 | ✅ Live |
+| TAU | plus | Frankfurt 🇩🇪 | ✅ Live |
+| XI | mobile | Hong Kong 🇭🇰 | ✅ Live |
+| ALPHA | TBD | Dynamic (location-based)* | 🚧 Not live yet |
+| SIGMA | internet | Dynamic (location-based)* | ✅ Live |
+| GAMMA | mobile | Dynamic (location-based)* | ✅ Live |
+| OMEGA | Varies | Hybrid (see below) | ✅ Live |
+
+## TAU label — operator & network details
+
+**Operator information**
+
+- Label: TAU
+- APN: `plus`
+- APN configuration: auto-configured (no user action required)
+
+**Breakout location**
+
+- Primary breakout: Frankfurt, Germany 🇩🇪
+
+## OMEGA multi-IMSI details
+
+### Configuration overview
+
+OMEGA operates as a multi-IMSI label with the following characteristics.
+
+**Current setup**
+
+- Total IMSIs: 4 active (5th onboarding — completion: April 15th)
+- Geographic distribution:
+  - 1 IMSI in APAC (Hong Kong 🇭🇰)
+  - 4 IMSIs in Europe 🇪🇺
+
+### Breakout logic
+
+OMEGA breakout is conditional:
+
+1. **When using the LAMBDA IMSI:** breaks out in Frankfurt 🇩🇪
+2. **When using other IMSIs (ALPHA, SIGMA, GAMMA):** dynamic location-based breakout to the nearest Packet Gateway
+3. **Current locations:**
+   - 🇩🇪 Frankfurt
+   - 🇳🇱 Amsterdam
+   - 🇺🇸 Ashburn (USA)
+   - 🇧🇷 São Paulo
+   - 🇿🇦 Johannesburg
+   - 🇸🇬 Singapore
+   - 🇦🇺 Sydney
+4. **Coming soon:**
+   - 🇯🇵 Tokyo
+   - 🇦🇪 UAE

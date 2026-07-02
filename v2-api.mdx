@@ -1,0 +1,152 @@
+---
+title: "Bondio V2 API"
+description: "Launch announcement for the Bondio V2 API — recurring plans, throttling, webhooks, and more"
+icon: "rocket"
+---
+
+## High-level features
+
+1. Better prices
+2. Recurring plans with throttling capability — generally used for daily unlimited plans. Throttling speeds available: 128, 256, 384, 512, 1024, 3072, 5120, 7680, 10240, 20480 kbps
+3. Country, telecom network name & 3G/4G/5G information returned with plan API responses
+4. Ability to add multiple plans on a single eSIM, each having an independent lifecycle and covering any region of your choice
+5. Real-time webhook notifications
+6. Customised roaming profiles for the plan
+7. SMS API for messaging to users
+8. Flexible & developer-friendly APIs
+
+## How to get started
+
+<Steps>
+  <Step title="Order new profiles">
+    Go to the [eSIM order page](https://dashboard.bondio.co/home/esims) and create a new order for `tau` eSIMs. The new telco services and APIs are launched under the label `tau`.
+  </Step>
+
+  <Step title="Create a new plan">
+    Use the Create Plans API to create a plan with the new parameters and newly launched coverage profiles. Check out the [API reference](https://bondio.stoplight.io/docs/bondio-api/qvrn700poy6jg-create-a-plan).
+  </Step>
+
+  <Step title="Create a new subscription">
+    Use the Create Subscription V2 API to create a V2 subscription with the required plan parameters. Here is the [API reference](https://bondio.stoplight.io/docs/bondio-api/ei243s3tzjkjs-create-a-new-subscription).
+  </Step>
+
+  <Step title="Scan the QR code">
+    On the [Subscription V2 page](https://dashboard.bondio.co/home/subscriptions-v2), click on the ICCID of the eSIM to open the side panel with the eSIM details. Scan the QR code to download the eSIM and enjoy the lightning-fast data service. 😃
+  </Step>
+</Steps>
+
+## Technical details
+
+### Plan object
+
+Three new properties have been introduced on the plan object:
+
+1. **periodIterations** — to support recurring plans
+2. **throttledSpeedKbps** — to support throttling (128, 256, 384, 512, 1024, 3072, 5120, 7680, 10240, 20480 kbps)
+3. **coverage.networks** — to provide all the country, network & 3G/4G/5G info of any plan
+
+The `periodIterations` field determines how many times the `periodDays` should be repeated. The `throttledSpeedKbps` determines the final speed once the `dataMegaBytes` is consumed on a plan.
+
+#### Example
+
+The configuration below means the plan provides 1024 MB (`dataMegaBytes`) of data for a period of 1 day (`periodDays`). After consumption of 1024 MB within that day, the speed will be throttled to 128 Kbps (`throttledSpeedKbps`) for the rest of the day. This 1-day cycle repeats 7 times (`periodIterations`). In every iteration, the plan provides full bandwidth at the beginning until the 1024 MB is consumed.
+
+```json
+{
+  "id": "plan_gulabo12",
+  "name": "Australia 1GB 7d recurring throttled",
+  "voiceMinutes": null,
+  "dataMegaBytes": 1024,
+  "smsMessages": null,
+  "throttledSpeedKbps": 128,
+  "periodDays": 1,
+  "periodIterations": 7,
+  "archivedAt": null,
+  "label": "alpha",
+  "coverage": {
+    "id": "cvpr_jaaneha1",
+    "name": "Australia (Single Network)",
+    "label": "alpha",
+    "networks": [
+      {
+        "id": "mnt_ahekjfa2",
+        "name": "Telstra",
+        "plmn": "50501",
+        "supportedRats": ["4g", "5g"],
+        "country": {
+          "name": "Australia",
+          "iso2": "AU",
+          "iso3": "AUS"
+        }
+      }
+    ]
+  }
+}
+```
+
+#### More examples
+
+| Plan details | dataMegaBytes | throttledSpeedKbps | periodDays | periodIterations |
+| --- | --- | --- | --- | --- |
+| For 7 days, 1 GB at full speed, data cut off thereafter | 1024 | 0 | 7 | 1 |
+| For 7 days, 1 GB at full speed, then unlimited throttled data at 128 Kbps | 1024 | 128 | 7 | 1 |
+| For 7 days total: each day, 1 GB at full speed, then unlimited throttled data at 256 Kbps | 1024 | 256 | 1 | 7 |
+| For 28 days total: every 7 days, 2 GB at full speed, then unlimited throttled data at 512 Kbps | 2048 | 512 | 7 | 4 |
+
+<Warning>
+`periodIterations` & `throttledSpeedKbps` are only supported with plans using the new coverage profiles of the `tau` label. All existing plans with `xi` & `chi` labels will have `periodIterations = 1` & `throttledSpeedKbps = 0`.
+</Warning>
+
+### SubscriptionV2 & PlanAttachment
+
+A new `SubscriptionV2` model has been introduced that will be used to include and offer any telco provider by Bondio from now on. Together with the new `PlanAttachment` model, here is how the mental model looks:
+
+{/* TODO: add diagram — images/subscription-v2-model.png */}
+
+1. Plan A is attached to the subscription with `START_NOW` configuration so its validity period starts at the time of attachment creation.
+2. Plan A is also attached to the subscription with `AT_FIRST_USAGE` configuration so another instance of Plan A begins at the time of first usage.
+3. Plan B is attached with `AT_FIRST_USAGE` configuration and accordingly begins when the user lands in India and uses the first byte on an eligible telco network.
+4. Plan C is attached with `SCHEDULED` configuration so it automatically starts as per the activation datetime in the config.
+5. Every SubscriptionV2 is uniquely associated with an eSIM (identified by its ICCID).
+6. A subscription has a state that determines when the data/SMS/voice services are active, suspended, or permanently terminated.
+
+### Coverage profiles
+
+The new coverage profiles have been added with the label `tau`. Plans created with the `tau` label must use the Create SubscriptionV2 API to provision a new eSIM. Here are some sample profiles:
+
+| Profile ID | Name | Label |
+| --- | --- | --- |
+| cvpr_2b21de16 | Germany, Basic (tau) | tau |
+| cvpr_c928d38c | Ghana, Basic (tau) | tau |
+| cvpr_7b0e861a | Ghana, Premium (tau) | tau |
+| cvpr_07f7b115 | Greece, Basic (tau) | tau |
+| cvpr_3b5b8204 | Greenland, Basic (tau) | tau |
+| cvpr_45b531e0 | Grenada, Basic (tau) | tau |
+| cvpr_4fd12295 | Guatemala, Basic (tau) | tau |
+| cvpr_1b0e7baa | Guyana, Basic (tau) | tau |
+| cvpr_cb61843a | Honduras, Basic (tau) | tau |
+| cvpr_a1ac769a | Hong Kong, Basic (tau) | tau |
+| cvpr_e47d7736 | Hong Kong, Premium (tau) | tau |
+| cvpr_53e5fee4 | Hungary, Basic (tau) | tau |
+| cvpr_51e706f8 | India, Basic (tau) | tau |
+| cvpr_2f96a08b | India, Premium (tau) | tau |
+
+## FAQs
+
+<AccordionGroup>
+  <Accordion title="Are the Subscription V1 APIs going to be deprecated?">
+    No. Since the label providers (`chi` & `xi`) will only be offered through the V1 APIs, the V1 APIs will continue to be supported. But we don't plan to add any new features to them.
+  </Accordion>
+
+  <Accordion title="Can I use my chi & xi eSIMs with the new APIs?">
+    No, the new APIs are launched with a new provider `tau`, so new `tau` eSIMs need to be used with them.
+  </Accordion>
+
+  <Accordion title="Can Bondio help in creating the new plans in bulk?">
+    Yes, absolutely. There is an Excel template you can fill in and give to Bondio, and your plans will be created in your account.
+  </Accordion>
+
+  <Accordion title="Can I have a custom coverage profile not available in the list of coverage profiles?">
+    Yes, we can create a bespoke coverage profile with a combination of any countries for your particular account only.
+  </Accordion>
+</AccordionGroup>

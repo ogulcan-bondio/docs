@@ -1,0 +1,90 @@
+---
+title: "Unified Label — OMEGA"
+sidebarTitle: "OMEGA Launch"
+description: "Launch announcement for OMEGA, Bondio's unified multi-IMSI eSIM label"
+icon: "rocket"
+---
+
+## What is the OMEGA label?
+
+OMEGA is the latest eSIM label featuring the Super IMSI (SuprIM) technology developed in-house by Bondio. The SuprIM technology has all the superpowers of multi-IMSI technology with none of its shortcomings. It can intelligently switch the IMSI in the eSIM based on various network conditions to provide the best experience to the end user.
+
+### Internet (IPX) outage protection
+
+This is the biggest class of telco outages, where the end user remains attached to the cell network but is unable to consume data. OMEGA eSIMs protect users from this outage by switching to an alternate route between the eSIM and the data centres during downtime, and reverting back to the original once the outage is over. All this happens without any intervention from end users or Bondio customers.
+
+Moreover, Bondio customers can clearly see the exact number of bytes per plan attachment used on the backup connectivity — and only pay for those. For example, at the time of an IPX outage, if an end user has 200 MB left on their plan attachment, then upon enabling the backup route they will only get 200 MB on the backup, not more.
+
+What this all means: fewer impacted end users, fewer customer support tickets, and more savings.
+
+### Best prices
+
+Due to the multi-IMSI aspect of OMEGA eSIMs, the eSIM can use different IMSIs in different countries — giving the best possible prices in all the countries where OMEGA is available.
+
+### Lightning-fast network attachment
+
+With 3 IMSIs (and more to come), the OMEGA eSIM doesn't iterate on each IMSI one by one in the hope that one of them will attach to the network. The SuprIM technology pre-selects and configures the IMSI in the eSIM before the network attachment even begins. This allows the eSIM to attach to the network as quickly as possible. In very rare cases, the eSIM may try network attachment with a second IMSI, but that will be a calculated step and not a blind iteration of all the IMSIs.
+
+## How to use the OMEGA label
+
+OMEGA works exactly the same as any other existing label. All you need to do is order OMEGA eSIMs on your Bondio account and use the OMEGA coverage ID in the **Create Subscription V2** and **Create Plan Attachment** APIs.
+
+## Launch timelines of individual features
+
+| Timeline | Features |
+| --- | --- |
+| December 2025, Week 1 | Single-country plans for EU & NA |
+| December 2025, Week 3 | Regional plans; Internet (IPX) outage protection |
+| January 2026, Week 2 | Recurring & throttling plans; single-country plans for other regions |
+
+## Customer FAQs
+
+<AccordionGroup>
+  <Accordion title="How can I create plans & subscriptions?">
+    Just like with other labels. If you need help, reach out anytime.
+  </Accordion>
+
+  <Accordion title="Can I create custom regions with OMEGA?">
+    Yes. We can help with set-up — please speak with your Bondio executive for details.
+  </Accordion>
+
+  <Accordion title="What are the prices for OMEGA?">
+    Pricing is shared on the Bondio Dashboard and the Live Pricing Sheet. Contact your Bondio executive with questions.
+  </Accordion>
+
+  <Accordion title="Can we throttle on OMEGA?">
+    Not yet — throttling is on the roadmap.
+  </Accordion>
+
+  <Accordion title="Can we create recurring plans on OMEGA?">
+    Not yet — recurring plans are on the roadmap.
+  </Accordion>
+
+  <Accordion title="Any limitations on validity (days) or data (GB)?">
+    No limits — fully flexible like LAMBDA and SIGMA.
+  </Accordion>
+
+  <Accordion title="Are webhook events the same?">
+    Yes — no changes required.
+  </Accordion>
+
+  <Accordion title="Are the APIs & API limits the same?">
+    Yes — everything works exactly the same as before.
+  </Accordion>
+
+  <Accordion title="If we already have plans on SIGMA or LAMBDA, do we need to recreate the plans on OMEGA?">
+    No, you do not need to create new plans for OMEGA, but you will need to change the coverage zones to OMEGA from LAMBDA / SIGMA.
+  </Accordion>
+
+  <Accordion title="Will LAMBDA and SIGMA be removed from the portal?">
+    Yes, they will eventually be removed as we strengthen the unified label (OMEGA), but not yet. We will give you ample notice before we do that.
+  </Accordion>
+
+  <Accordion title="For IMSI switching/back-up, do we need plans on both IMSIs (LAMBDA & SIGMA) or just one?">
+    Create plans on OMEGA for now. Bondio will switch to a different IMSI in the event of an outage.
+  </Accordion>
+</AccordionGroup>
+
+<Note>
+For full details on OMEGA pricing and the 90-day grace period, see [What is the OMEGA Label?](/platform/omega-label)
+</Note>

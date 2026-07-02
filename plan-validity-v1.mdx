@@ -1,0 +1,29 @@
+---
+title: "How Plan Validity Works in V1 Subscriptions"
+sidebarTitle: "Plan Validity (V1)"
+description: "How plan validity periods start, end, and extend via top-ups in V1 subscriptions"
+icon: "clock"
+---
+
+The plan validity is the interval during which an end consumer can use the data internet service on an eSIM. The validity period of a plan starts upon subscription activation and finishes at the end of the number of days in the plan.
+
+A subscription can be activated in the following ways:
+
+1. **First usage** — Activation happens when the user connects to a cell tower inside the plan-supported region for the first time.
+2. **Activate API call** — The client calls the `POST /v1/subscriptions/activate` API endpoint to activate.
+
+<Note>
+For method 2, even though the subscription gets activated, the user may not be able to use the data internet if they are not in the plan coverage region.
+</Note>
+
+## How a top-up plan affects validity
+
+The validity period of a subscription can be extended using a top-up plan whenever available. The top-up plan validity begins instantaneously at the time of the `POST /v1/subscription/:id/addons` API call.
+
+Additionally, the top-up API call will only work if the eSIM already has an active plan.
+
+**Example:**
+
+If a subscription is created with a UK `1GB_7d` plan on 1st Jan, the plan will expire on 7th Jan.
+
+If on 3rd Jan a top-up plan of `1GB_7d` is attached to that subscription, then the plan expiry date will become 10th Jan.

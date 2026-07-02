@@ -1,0 +1,84 @@
+---
+title: "Bondio Throttling"
+sidebarTitle: "Throttling"
+description: "How data throttling works on the Bondio platform, supported labels, and key rules"
+icon: "gauge"
+---
+
+## Overview
+
+Throttling is a speed limitation applied to data after a user has consumed their full-speed data allowance. It allows continued data usage at a significantly reduced speed rather than cutting off service entirely.
+
+Throttling is currently supported on two labels:
+
+- **LAMBDA**
+- **TAU**
+
+## How throttling works
+
+When a throttled plan is created, it defines two distinct data pools that are consumed in sequence:
+
+1. **Full-Speed Pool:** A defined data allowance (e.g., 1 GB) delivered at unrestricted speeds.
+2. **Throttled Pool:** Additional data (e.g., 100 GB) available at a reduced speed (e.g., 5,120 kbps) once the full-speed pool is exhausted.
+
+### Example plan structure
+
+| Component | Value | Notes |
+| --- | --- | --- |
+| Full-speed data | 1 GB | Normal, unrestricted speed |
+| Throttled data | 100 GB | At 5,120 kbps |
+| Validity | 7 days | |
+| Iterations | 1 | No automatic data reset |
+
+Once the user consumes their 1 GB full-speed allowance, data continues seamlessly from the 100 GB throttled pool at the throttled speed.
+
+## Key concepts
+
+### Throttle speed as a signal
+
+The presence of a throttle speed value in a plan configuration is what tells the system that throttled data is available. It is not merely a speed cap — it activates the throttled data pool.
+
+<Warning>
+Throttling does **not** split a single data pool at a midpoint. For example, a plan with 10 GB does not throttle the user after 5 GB while keeping the remaining 5 GB throttled. The full-speed and throttled pools are always defined as separate, independent allocations.
+</Warning>
+
+## Label support
+
+| Label | Throttling supported | Notes |
+| --- | --- | --- |
+| LAMBDA | ✅ Yes | Full throttling support |
+| TAU | ✅ Yes | With subscription constraints — see below |
+| XI | ❌ No | Not supported |
+| SIGMA | ❌ No | Not supported |
+| OMEGA | ❌ No | Not supported |
+| GAMMA | ❌ No | Not supported |
+
+## TAU-specific subscription rules
+
+TAU subscriptions with throttled plans follow specific rules regarding plan attachment:
+
+- Once a recurring and throttled plan is set on a TAU subscription — whether in **Active** or **Pending** state — no additional plans can be attached to that subscription.
+- This restriction is lifted once the recurring throttled plan is **Suspended**.
+- After suspension, any other TAU plan can be added to the subscription as normal.
+
+**Plan state reference:**
+
+- **Active** — Plan is currently in use on the subscription.
+- **Pending** — Plan is queued and will activate when the current plan expires.
+- **Suspended** — Plan is paused; the subscription is no longer bound by its restrictions.
+
+## Usage tracking
+
+The dashboard and API return usage data for the **latest plan iteration only** — not cumulative daily iterations. This affects how throttled usage is monitored:
+
+- Daily consumption figures reset each day on the dashboard.
+- To calculate total usage across a multi-day throttled plan (e.g., a 7-day plan), a CDR (Call Detail Record) fetch is required.
+- The monthly CDR provides complete usage data per ICCID across the entire billing month and is the recommended source for usage verification.
+
+## Unsupported scenarios
+
+<Warning>
+The following throttling configuration is **not** currently supported on the Bondio platform:
+
+- **Mid-pool throttling:** Consuming part of a single data bucket at full speed, then throttling the remainder (e.g., a 10 GB plan where the first 5 GB are full-speed and the last 5 GB are throttled).
+</Warning>

@@ -1,0 +1,37 @@
+---
+title: "Click to Install on Android"
+description: "Let end users install eSIM profiles from your Android app without scanning a QR code"
+icon: "android"
+---
+
+## What is "Click to Install" on Android?
+
+This is a feature that allows eSIM profile installation on Android without the QR code. Once implemented, the end user can click a button in an Android app to trigger the eSIM installation.
+
+## How do I implement this feature in our Android app?
+
+Here are the steps to implement this feature:
+
+<Steps>
+  <Step title="Share your app signature with Bondio">
+    Provide Bondio over chat/email the SHA-1 or SHA-256 signature hash of the public certificate used to sign your Android app that is published on the Play Store.
+  </Step>
+
+  <Step title="Bondio generates a customised eSIM profile">
+    Bondio will generate a customised eSIM profile for you. This will add a new entry in your eSIM inventory table on the Bondio web portal. Generating a customised eSIM profile can take up to **3–4 working days**.
+  </Step>
+
+  <Step title="Implement the Android API">
+    Implement the [EuiccManager downloadSubscription API](https://developer.android.com/reference/android/telephony/euicc/EuiccManager#downloadSubscription(android.telephony.euicc.DownloadableSubscription,%20boolean,%20android.app.PendingIntent)) in your mobile app to trigger the installation of the customised eSIM. Check out the [Android eSIM documentation](https://source.android.com/docs/core/connect/esim-overview) for more information.
+  </Step>
+</Steps>
+
+## Does it require any special privilege from Google?
+
+No. Unlike the iOS eSIM API, it doesn't require any special privileges from Google or any other organisation.
+
+## How much does it cost?
+
+One-time fixed cost per eSIM label. For the exact amount, please reach out to your Bondio point of contact.
+
+For example, if you want this feature on Tau & Lambda eSIMs on the Bondio platform, that counts as 2 customisations.
