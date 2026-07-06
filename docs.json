@@ -1,12 +1,17 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Bondio Help & FAQs",
+  "name": "Bondio Help Center",
   "colors": {
-    "primary": "#0D9373",
-    "light": "#07C983",
-    "dark": "#0D9373"
-  },
+  "primary": "#EF8748",
+  "light": "#619CF8",
+  "dark": "#EF8748"
+},
+"background": {
+  "color": {
+    "dark": "#080D18"
+  }
+},
   "favicon": "/favicon.svg",
   "navigation": {
     "groups": [
